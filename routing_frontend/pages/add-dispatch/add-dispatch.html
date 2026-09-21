@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Add Dispatch - RouteForge</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous"
+    />
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
+    <style>
+        body {
+            background: #f5f7fa;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .form-card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+        }
+
+        #map {
+            height: 450px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #dee2e6;
+        }
+
+        .location-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .location-item {
+            margin-bottom: 6px;
+        }
+
+        .location-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .required-label::after {
+            content: " *";
+            color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg bg-white border-bottom">
+        <div class="container-fluid px-4">
+
+            <a
+                class="navbar-brand fw-bold"
+                href="../home/home.html">
+                RouteForge
+            </a>
+
+            <div class="navbar-nav ms-auto">
+
+                <a
+                    class="nav-link"
+                    href="../home/home.html">
+                    Home
+                </a>
+
+                <a
+                    class="nav-link"
+                    href="../dispatch/dispatch.html">
+                    Dispatches
+                </a>
+
+            </div>
+
+        </div>
+    </nav>
+
+
+    <!-- Main -->
+    <main class="container py-5">
+
+        <div class="page-header">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h1 class="fw-bold">
+                        Add Dispatch
+                    </h1>
+
+                    <p class="text-secondary mb-0">
+                        Create a new delivery dispatch and assign its destination.
+                    </p>
+
+                </div>
+
+                <a
+                    href="../dispatch/dispatch.html"
+                    class="btn btn-outline-secondary">
+                    Back to Dispatches
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="card form-card">
+
+            <div class="card-body p-4 p-md-5">
+
+                <h3 class="section-title">
+                    Dispatch Information
+                </h3>
+
+
+                <form id="cargoForm">
+
+                    <!-- Dispatch Type -->
+                    <div class="mb-4">
+
+                        <label
+                            for="dispatchType"
+                            class="form-label required-label">
+                            Dispatch Type
+                        </label>
+
+                        <select
+                            id="dispatchType"
+                            class="form-select"
+                            required>
+
+                            <option value="BAG">
+                                Bag
+                            </option>
+
+                            <option value="SACK">
+                                Sack
+                            </option>
+
+                            <option value="PARCEL">
+                                Parcel
+                            </option>
+
+                            <option value="FILE">
+                                File
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Weight -->
+                    <div class="mb-4">
+
+                        <label
+                            for="weight"
+                            class="form-label required-label">
+                            Weight (kg)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="weight"
+                            class="form-control"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="Enter dispatch weight"
+                            required
+                        />
+
+                    </div>
+
+
+                    <!-- Customer -->
+                    <div class="mb-4">
+
+                        <label
+                            for="customer"
+                            class="form-label required-label">
+                            Customer
+                        </label>
+
+                        <select
+                            id="customer"
+                            class="form-select"
+                            required>
+                        </select>
+
+                    </div>
+
+
+                    <!-- Preferred Time -->
+                    <div class="mb-4">
+
+                        <label class="form-label">
+                            Preferred Delivery Time
+                        </label>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="firstDate"
+                                    class="form-label text-secondary">
+                                    Start Time
+                                </label>
+
+                                <input
+                                    type="time"
+                                    id="firstDate"
+                                    class="form-control"
+                                />
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <label
+                                    for="lastDate"
+                                    class="form-label text-secondary">
+                                    End Time
+                                </label>
+
+                                <input
+                                    type="time"
+                                    id="lastDate"
+                                    class="form-control"
+                                />
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-text">
+                            The preferred delivery window must be at least 1 hour.
+                        </div>
+
+                    </div>
+
+
+                    <!-- Delivery Window -->
+                    <div class="mb-4">
+
+                        <label
+                            for="deliveryRange"
+                            class="form-label required-label">
+                            Delivery Window
+                        </label>
+
+                        <select
+                            id="deliveryRange"
+                            class="form-select"
+                            required>
+
+                            <option value="MORNING">
+                                Morning
+                            </option>
+
+                            <option value="MIDMORNING">
+                                Mid-Morning
+                            </option>
+
+                            <option value="AFTERNOON">
+                                Afternoon
+                            </option>
+
+                            <option value="EVENING">
+                                Evening
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Location -->
+                    <div class="mb-4">
+
+                        <h3 class="section-title">
+                            Delivery Location
+                        </h3>
+
+                        <p class="text-secondary">
+                            Drag the marker to select the delivery destination.
+                            The destination must be inside the selected branch boundary.
+                        </p>
+
+                        <div id="map"></div>
+
+
+                        <div class="location-info mt-3">
+
+                            <div class="location-item">
+                                <strong>Latitude:</strong>
+                                <span id="latitude">
+                                    Not selected
+                                </span>
+                            </div>
+
+                            <div class="location-item">
+                                <strong>Longitude:</strong>
+                                <span id="longitude">
+                                    Not selected
+                                </span>
+                            </div>
+
+                            <div class="location-item">
+                                <strong>Address:</strong>
+                                <span id="address">
+                                    Not selected
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Submit -->
+                    <div class="d-flex gap-2">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary px-4">
+                            Create Dispatch
+                        </button>
+
+                        <a
+                            href="../dispatch/dispatch.html"
+                            class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+    <script src="add-dispatch.js" defer></script>
+
+    <script src="../../helper.js" defer></script>
+
+</body>
+
+</html>

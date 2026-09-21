@@ -1,0 +1,352 @@
+/* =========================================================
+   RouteForge - Route Optimization
+   ========================================================= */
+
+:root {
+    --rf-primary: #1463ff;
+    --rf-primary-dark: #0d47c9;
+    --rf-bg: #f4f7fb;
+    --rf-card: #ffffff;
+    --rf-text: #172033;
+    --rf-muted: #667085;
+    --rf-border: #e5eaf2;
+    --rf-shadow: 0 10px 30px rgba(16, 24, 40, 0.07);
+}
+
+
+/* =========================
+   Global
+   ========================= */
+
+body {
+    margin: 0;
+    background: var(--rf-bg);
+    color: var(--rf-text);
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+}
+
+
+/* =========================
+   Navbar
+   ========================= */
+
+.navbar {
+    min-height: 70px;
+}
+
+.navbar-brand {
+    font-size: 1.45rem;
+    letter-spacing: -0.5px;
+    color: var(--rf-text);
+}
+
+.nav-link {
+    font-weight: 500;
+    color: #344054;
+}
+
+.nav-link:hover {
+    color: var(--rf-primary);
+}
+
+
+/* =========================
+   Page Header
+   ========================= */
+
+.page-header {
+    padding-top: 10px;
+}
+
+.page-header h1 {
+    font-size: 2.6rem;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    font-size: 1.05rem;
+    margin-bottom: 0;
+}
+
+
+/* =========================
+   Cards
+   ========================= */
+
+.card {
+    border-radius: 18px;
+    background: var(--rf-card);
+}
+
+.card-body {
+    border-radius: 18px;
+}
+
+
+/* =========================
+   Vehicle Dispatch Selection
+   ========================= */
+
+.form-label {
+    color: var(--rf-text);
+    font-size: 0.95rem;
+}
+
+.form-select {
+    min-height: 50px;
+    border: 1px solid var(--rf-border);
+    border-radius: 10px;
+    font-size: 0.98rem;
+    color: #344054;
+    box-shadow: none;
+}
+
+.form-select:focus {
+    border-color: var(--rf-primary);
+    box-shadow: 0 0 0 3px rgba(20, 99, 255, 0.12);
+}
+
+
+/* =========================
+   Buttons
+   ========================= */
+
+.btn {
+    border-radius: 9px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: var(--rf-primary);
+    border-color: var(--rf-primary);
+}
+
+.btn-primary:hover {
+    background: var(--rf-primary-dark);
+    border-color: var(--rf-primary-dark);
+    transform: translateY(-1px);
+}
+
+.btn-info,
+.btn-warning {
+    border: none;
+}
+
+
+/* =========================
+   Metric Cards
+   ========================= */
+
+.metric-card {
+    background: #ffffff;
+    border: 1px solid var(--rf-border);
+    border-radius: 16px;
+    padding: 24px;
+    min-height: 125px;
+    box-shadow: var(--rf-shadow);
+}
+
+.metric-label {
+    color: var(--rf-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.metric-value {
+    color: var(--rf-text);
+    font-size: 1.9rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+
+/* =========================
+   Vehicle Information
+   ========================= */
+
+#vehicleInformation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.vehicle-info-item {
+    background: #f8fafc;
+    border: 1px solid var(--rf-border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    min-width: 180px;
+}
+
+.vehicle-info-label {
+    display: block;
+    color: var(--rf-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.vehicle-info-value {
+    color: var(--rf-text);
+    font-size: 0.98rem;
+    font-weight: 600;
+}
+
+
+/* =========================
+   Stop Sequence
+   ========================= */
+
+#stopSequence {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.stop-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    padding: 12px 0;
+}
+
+.stop-number {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #eaf1ff;
+    color: var(--rf-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.stop-content {
+    flex: 1;
+}
+
+.stop-title {
+    font-weight: 650;
+    color: var(--rf-text);
+}
+
+.stop-details {
+    color: var(--rf-muted);
+    font-size: 0.88rem;
+    margin-top: 2px;
+}
+
+.stop-connector {
+    position: absolute;
+    left: 18px;
+    top: 50px;
+    width: 2px;
+    height: 28px;
+    background: #d9e2f2;
+}
+
+
+/* =========================
+   Map
+   ========================= */
+
+#map {
+    width: 100%;
+    height: 560px;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.leaflet-container {
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+
+/* =========================
+   Map Controls
+   ========================= */
+
+.route-controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+}
+
+.route-controls .btn {
+    padding: 10px 18px;
+}
+
+
+/* =========================
+   Loading State
+   ========================= */
+
+.route-loading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--rf-muted);
+    font-weight: 500;
+}
+
+.route-loading .spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #dce5f5;
+    border-top-color: var(--rf-primary);
+    border-radius: 50%;
+    animation: routeSpin 0.8s linear infinite;
+}
+
+@keyframes routeSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================
+   Responsive
+   ========================= */
+
+@media (max-width: 768px) {
+
+    .page-header h1 {
+        font-size: 2rem;
+    }
+
+    .metric-value {
+        font-size: 1.6rem;
+    }
+
+    #map {
+        height: 450px;
+    }
+
+    .route-controls {
+        flex-direction: column;
+    }
+
+    .route-controls .btn {
+        width: 100%;
+    }
+}

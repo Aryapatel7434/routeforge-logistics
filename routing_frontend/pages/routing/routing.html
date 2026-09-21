@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0" />
+
+    <title>Route Optimization - RouteForge</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous" />
+
+    <!-- Leaflet -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+    <!-- RouteForge Helper -->
+    <script
+        src="../../helper.js"
+        defer>
+    </script>
+
+    <!-- Route Optimization -->
+    <script
+        src="routing.js"
+        defer>
+    </script>
+
+    <style>
+
+        body {
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        .navbar {
+            background: #ffffff !important;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.35rem;
+            color: #172033;
+        }
+
+        .nav-link {
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .page-header {
+            margin-top: 45px;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 2.8rem;
+            font-weight: 750;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .main-card {
+            background: #ffffff;
+            border: none;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 10px 35px rgba(15, 23, 42, 0.07);
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .form-select {
+            min-height: 52px;
+            border-radius: 10px;
+            border: 1px solid #dbe2ea;
+        }
+
+        .form-select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        #createRouteButton {
+            min-height: 52px;
+            padding: 0 28px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .metric-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+            height: 100%;
+            border: 1px solid #eef2f7;
+        }
+
+        .metric-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.7rem;
+            font-weight: 750;
+            color: #172033;
+        }
+
+        .vehicle-info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #edf0f4;
+        }
+
+        .vehicle-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .vehicle-info-label {
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .vehicle-info-value {
+            font-weight: 700;
+            color: #172033;
+        }
+
+        .stop-item {
+            display: flex;
+            position: relative;
+            padding: 15px 0;
+        }
+
+        .stop-number {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 15px;
+        }
+
+        .stop-content {
+            flex: 1;
+        }
+
+        .stop-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .stop-details {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .stop-connector {
+            position: absolute;
+            left: 18px;
+            top: 53px;
+            width: 2px;
+            height: calc(100% - 30px);
+            background: #dbe3ef;
+        }
+
+        #map {
+            width: 100%;
+            height: 620px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .map-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .map-controls button {
+            border-radius: 9px;
+            font-weight: 600;
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-line {
+            width: 30px;
+            height: 5px;
+            border-radius: 5px;
+        }
+
+        .outbound-line {
+            background: blue;
+        }
+
+        .return-line {
+            background: purple;
+        }
+
+        .route-status {
+            border-radius: 10px;
+        }
+
+        .empty-state {
+            color: #64748b;
+            padding: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+
+            .page-header h1 {
+                font-size: 2.1rem;
+            }
+
+            .main-card {
+                padding: 20px;
+            }
+
+            #map {
+                height: 450px;
+            }
+
+            .vehicle-info-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         NAVBAR
+         ===================================================== -->
+
+    <nav class="navbar navbar-expand-lg">
+
+        <div class="container-fluid px-4">
+
+            <a
+                class="navbar-brand"
+                href="../home/home.html">
+
+                RouteForge
+
+            </a>
+
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+
+            <div
+                class="collapse navbar-collapse justify-content-end"
+                id="navbarSupportedContent">
+
+                <ul class="navbar-nav">
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="../home/home.html">
+
+                            Home
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <div class="container pb-5">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <h1>
+                Route Optimization
+            </h1>
+
+            <p>
+                Generate optimized delivery routes using
+                GraphHopper and Jsprit.
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ROUTE CONFIGURATION
+             ================================================= -->
+
+        <div class="main-card">
+
+            <div class="section-title">
+                Route Configuration
+            </div>
+
+
+            <form id="cargoForm">
+
+                <div class="mb-4">
+
+                    <label
+                        for="distribution"
+                        class="form-label">
+
+                        Vehicle Dispatch Assignment
+
+                    </label>
+
+
+                    <select
+                        id="distribution"
+                        class="form-select"
+                        required>
+
+                        <option value="">
+                            Loading vehicle assignments...
+                        </option>
+
+                    </select>
+
+
+                    <div class="form-text mt-2">
+
+                        Select a vehicle assignment to generate
+                        its optimized delivery route.
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="routeStatus"
+                    class="alert alert-info route-status d-none">
+
+                    Ready to optimize route.
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    id="createRouteButton"
+                    class="btn btn-primary">
+
+                    Create Optimized Route
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ROUTE METRICS
+             ================================================= -->
+
+        <div class="row g-4 mb-4">
+
+
+            <div class="col-md-4">
+
+                <div class="metric-card">
+
+                    <div class="metric-label">
+                        Total Distance
+                    </div>
+
+                    <div
+                        class="metric-value"
+                        id="totalDistance">
+
+                        —
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-md-4">
+
+                <div class="metric-card">
+
+                    <div class="metric-label">
+                        Total Duration
+                    </div>
+
+                    <div
+                        class="metric-value"
+                        id="totalDuration">
+
+                        —
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="col-md-4">
+
+                <div class="metric-card">
+
+                    <div class="metric-label">
+                        Delivery Stops
+                    </div>
+
+                    <div
+                        class="metric-value"
+                        id="totalStops">
+
+                        —
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             VEHICLE + STOP INFORMATION
+             ================================================= -->
+
+        <div class="row g-4 mb-4">
+
+
+            <!-- VEHICLE -->
+
+            <div class="col-lg-5">
+
+                <div class="main-card h-100">
+
+                    <div class="section-title">
+                        Vehicle Information
+                    </div>
+
+
+                    <div id="vehicleInformation">
+
+                        <div class="empty-state">
+                            Generate a route to view vehicle
+                            information.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STOP SEQUENCE -->
+
+            <div class="col-lg-7">
+
+                <div class="main-card h-100">
+
+                    <div class="section-title">
+                        Optimized Stop Sequence
+                    </div>
+
+
+                    <div id="stopSequence">
+
+                        <div class="empty-state">
+                            Generate a route to view the optimized
+                            delivery sequence.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             INTERACTIVE MAP
+             ================================================= -->
+
+        <div class="main-card">
+
+            <div
+                class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+
+                <div>
+
+                    <div class="section-title mb-1">
+                        Route Map
+                    </div>
+
+                    <div class="text-muted">
+                        Visualize the optimized delivery route.
+                    </div>
+
+                </div>
+
+
+                <div class="map-controls">
+
+                    <button
+                        type="button"
+                        id="toggleOutbound"
+                        class="btn btn-info">
+
+                        Show / Hide Outbound
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="toggleReturn"
+                        class="btn btn-warning">
+
+                        Show / Hide Return
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div id="map"></div>
+
+
+            <div class="legend">
+
+                <div class="legend-item">
+
+                    <span
+                        class="legend-line outbound-line">
+                    </span>
+
+                    Outbound Route
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span
+                        class="legend-line return-line">
+                    </span>
+
+                    Return Route
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- Bootstrap JavaScript -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous">
+    </script>
+
+
+</body>
+
+</html>
